@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>Index</title>
+    {% endif %}
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <style>
+        {% block cus_style %}{% endblock %}
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <div class="container">
+
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="{% block nav_home %}{% endblock %}" href="{{url_for('main')}}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="{% block nav_gallery %}{% endblock %}" href="{{url_for('gallery')}}">Gallery</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav justify-content-between">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('sign_up_login_form')}}">
+                                <font size="1">Login or Signup</font>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+    {% block content %}{% endblock %}
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{{url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/popper/popper.min.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+
+</body>
+</html>

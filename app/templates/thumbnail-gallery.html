@@ -1,0 +1,99 @@
+﻿{% extends "base.html" %}
+
+<!-- Custom styles for this template -->
+{% block cus_style %}
+body {
+            padding-top: 256px;
+        }
+@media (min-width: 992px) {
+            body {
+                padding-top: 56px;
+            }
+        }
+    }
+
+<link href="resources/css/thumbnail-gallery.css" rel="stylesheet">
+<link href="{{url_for('static', filename='resources/css/thumbnail-gallery.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block nav_home %}nav-link{% endblock %}
+{% block nav_gallery %}nav-link active{% endblock %}
+
+{% block content %}
+<!-- Page Content -->
+<div class="container">
+    <h1 class="my-4 text-center text-lg-left">Thumbnail Gallery</h1>
+    <div class="row text-center text-lg-left">
+        <div class="col-lg-3 col-md-4 col-xs-6">
+            <a href="#" class="d-block mb-4 h-10">
+                <img class="img-fluid img-thumbnail" src="http://placehold.it/400x300" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6">
+            <a href="#" class="d-block mb-4 h-10">
+                <img class="img-fluid img-thumbnail" src="http://placehold.it/400x300" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6">
+            <a href="#" class="d-block mb-4 h-10">
+                <img class="img-fluid img-thumbnail" src="http://placehold.it/400x300" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6">
+            <a href="#" class="d-block mb-4 h-10">
+                <img class="img-fluid img-thumbnail" src="http://placehold.it/400x300" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6">
+            <a href="#" class="d-block mb-4 h-10">
+                <img class="img-fluid img-thumbnail" src="http://placehold.it/400x300" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6">
+            <a href="#" class="d-block mb-4 h-10">
+                <img class="img-fluid img-thumbnail" src="http://placehold.it/400x300" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6">
+            <a href="#" class="d-block mb-4 h-10">
+                <img class="img-fluid img-thumbnail" src="http://placehold.it/400x300" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6">
+            <a href="#" class="d-block mb-4 h-10">
+                <img class="img-fluid img-thumbnail" src="http://placehold.it/400x300" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6">
+            <a href="#" class="d-block mb-4 h-10">
+                <img class="img-fluid img-thumbnail" src="http://placehold.it/400x300" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6">
+            <a href="#" class="d-block mb-4 h-10">
+                <img class="img-fluid img-thumbnail" src="http://placehold.it/400x300" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6">
+            <a href="#" class="d-block mb-4 h-10">
+                <img class="img-fluid img-thumbnail" src="http://placehold.it/400x300" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6">
+            <a href="#" class="d-block mb-4 h-10">
+                <img class="img-fluid img-thumbnail" src="http://placehold.it/400x300" alt="">
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+{% endblock %}
+<!-- /.container -->

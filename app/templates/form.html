@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block cus_style %}
+body {
+        padding-top: 256px;
+    }
+@media (min-width: 992px) {
+        body {
+            padding-top: 108px;
+        }
+    }
+{% endblock %}
+
+{% block nav_home %}nav-link{% endblock %}
+{% block nav_gallery %}nav-link{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <!--<div class="col-lg-4 col-centered text-center">-->
+        <!--</div>-->
+        <div class="col-lg-4 col-centered text-center">
+            <div id="signup-login-tab">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#signup" data-toggle="tab">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#login" data-toggle="tab">Log In</a>
+                    </li>
+                </ul>
+
+
+
+                <div class="tab-content clearfix">
+
+                    <div class="tab-pane fade show active" id="signup">
+
+                        <h1>Sign Up for Free</h1>
+
+                        <form action="/" method="post">
+
+                            <div class="top-row">
+                                <div class="field-wrap">
+                                    <label>
+                                        First Name<span class="req">*</span>
+                                    </label>
+                                    <input type="text" required autocomplete="off" />
+                                </div>
+
+                                <div class="field-wrap">
+                                    <label>
+                                        Last Name<span class="req">*</span>
+                                    </label>
+                                    <input type="text" required autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="field-wrap">
+                                <label>
+                                    Email Address<span class="req">*</span>
+                                </label>
+                                <input type="email" required autocomplete="off" />
+                            </div>
+
+                            <div class="field-wrap">
+                                <label>
+                                    Set A Password<span class="req">*</span>
+                                </label>
+                                <input type="password" required autocomplete="off" />
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block" />Get Started</button>
+
+                        </form>
+
+
+                    </div>
+
+                    <div class="tab-pane fade" id="login">
+                        <h1>Welcome Back!</h1>
+
+                        <form action="/" method="post">
+
+                            <div class="field-wrap">
+                                <label>
+                                    Email Address<span class="req">*</span>
+                                </label>
+                                <input type="email" required autocomplete="off" />
+                            </div>
+
+                            <div class="field-wrap">
+                                <label>
+                                    Password<span class="req">*</span>
+                                </label>
+                                <input type="password" required autocomplete="off" />
+                            </div>
+
+                            <p class="forgot"><a href="#">Forgot Password?</a></p>
+
+                            <button type="button" class="btn btn-primary btn-block" />Log In</button>
+
+                        </form>
+                    </div>
+
+                </div><!-- tab-content -->
+            </div>
+        </div>
+        <!--<div class="col-lg-4 col-centered text-center">-->
+        <!--</div>-->
+    </div>
+</div>
+        {% endblock %}
+
