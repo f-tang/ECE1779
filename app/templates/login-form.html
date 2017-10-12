@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block cus_style %}
+body {
+padding-top: 256px;
+}
+@media (min-width: 992px) {
+body {
+padding-top: 108px;
+}
+}
+{% endblock %}
+
+{% block nav_home %}nav-link{% endblock %}
+{% block nav_gallery %}nav-link{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Please Login:</h1>
+    <br>
+    {% from "_formhelper.html" import render_field %}
+    <form action="/Login" method="post">
+        {{ form.csrf_token }}
+        <dl>
+            {{render_field(form.username)}}
+            {{render_field(form.password)}}
+            <br>
+            <p class="forgot"><a href="#">Forgot Password?</a></p>
+        </dl>
+        <p>
+            <input class="btn btn-primary" type="submit"
+               value="Login">
+        </p>
+
+    </form>
+
+    {% if error %}
+    <p class="error"><strong>Error: </strong>{{error}}</p>
+    {% endif %}
+</div>
+
+
+{% endblock %}
+

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block cus_style %}
+body {
+padding-top: 256px;
+}
+@media (min-width: 992px) {
+body {
+padding-top: 108px;
+}
+}
+{% endblock %}
+
+{% block nav_home %}nav-link{% endblock %}
+{% block nav_gallery %}nav-link{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Sign Up for Free</h1>
+    <br>
+    {% from "_formhelper.html" import render_field %}
+    <form method="post" action="/Signup">
+        {{ form.csrf_token }}
+        <dl>
+            {{render_field(form.username)}}
+            {{render_field(form.email)}}
+            {{render_field(form.password)}}
+            {{render_field(form.confirm)}}
+            {{render_field(form.accept_tos)}}
+        </dl>
+        <p><input class="btn btn-primary" type="submit" value=Register></p>
+    </form>
+
+    {% if error %}
+        <p class="error"><strong>Error: </strong>{{error}}</p>
+    {% endif %}
+</div>
+
+
+{% endblock %}
+
