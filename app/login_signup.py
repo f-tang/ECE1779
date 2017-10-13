@@ -4,26 +4,12 @@ from wtforms import BooleanField, StringField, PasswordField, validators
 
 from passlib.hash import sha256_crypt
 
-from app import webapp, login_required
-from app.config import db_config
+from app import webapp, login_required, get_db
 
-import pymysql.cursors
 from pymysql import escape_string
 
 import gc
 
-# access database
-def connect_to_database():
-    return pymysql.connect(host=db_config['host'],
-                                user=db_config['user'],
-                                password=db_config['password'],
-                                db=db_config['database'])
-
-def get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._databse = connect_to_database()
-    return db
 
 @webapp.teardown_appcontext
 def teardown_db(exception):
@@ -118,7 +104,11 @@ def signup_form():
                 return render_template('signup-form.html', title='sign up', form=form, error=error)
             else:
                 cursor.execute("SELECT max(userID) AS max_value FROM users")
-                uid = x[0] + 1
+                x = cursor.fetchone()
+                if x[0] == None:
+                    uid = 1
+                else:
+                    uid = x[0] + 1
                 cursor.execute("INSERT INTO users (userID, username, password, email) VALUES (%s, %s, %s, %s)",
                                (int(uid), escape_string(username), escape_string(password), escape_string(email)))
                 cnx.commit()

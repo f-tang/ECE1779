@@ -18,11 +18,15 @@ padding-top: 108px;
 <div class="container">
     <h1>Upload an image</h1>
     <br>
+
     <form id="image-upload-form" action="{{ url_for('image_upload') }}" method="post" enctype="multipart/form-data">
+        <dl>
             <input type="file" name="file" accept="image/*" multiple>
+        </dl>
+        <br>
         <p>
             <input class="btn btn-primary" type="submit"
-               value="Login">
+                   value="upload">
         </p>
 
     </form>

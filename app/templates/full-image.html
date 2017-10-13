@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block cus_style %}
+    body {
+        padding-top: 108px;
+    }
+
+    @media (min-width: 992px) {
+        body {
+            padding-top: 56px;
+        }
+    }
+{% endblock %}
+
+{% block nav_home %}nav-link active{% endblock %}
+{% block nav_gallery %}nav-link{% endblock %}
+
+{% block content %}
+<!-- Page Content -->
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <img class="img-fluid img-thumbnail" src="{{url_for('static', filename=image)}}" alt="">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
