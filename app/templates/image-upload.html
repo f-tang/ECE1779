@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block cus_style %}
+body {
+padding-top: 256px;
+}
+@media (min-width: 992px) {
+body {
+padding-top: 108px;
+}
+}
+{% endblock %}
+
+{% block nav_home %}nav-link{% endblock %}
+{% block nav_gallery %}nav-link{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Upload an image</h1>
+    <br>
+    <form id="image-upload-form" action="{{ url_for('image_upload') }}" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" multiple>
+        <p>
+            <input class="btn btn-primary" type="submit"
+               value="Login">
+        </p>
+
+    </form>
+
+    {% if error %}
+    <p class="error"><strong>Error: </strong>{{error}}</p>
+    {% endif %}
+</div>
+
+
+{% endblock %}
+
