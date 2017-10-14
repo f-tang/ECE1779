@@ -1,12 +1,26 @@
 from flask import render_template, redirect, url_for, request, g, flash, session
 from app import webapp, login_required, get_db
 from pymysql import escape_string
+from wand.image import Image
 
 import gc
 import os
-
+import time
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+
+def image_transfer(imagefile, method):
+    try:
+        if int(method) == 0:
+            imagefile.flip()
+        if int(method) == 1:
+            imagefile.flop()
+        if int(method) == 2:
+            imagefile.type = 'grayscale'
+        return imagefile
+    except Exception as e:
+        return str(e)
 
 @webapp.route('/image-upload', methods=['GET', 'POST'])
 @login_required
@@ -34,14 +48,31 @@ def image_upload():
                 else:
                     pID = x[0] + 1
 
-                filename = escape_string(file.filename)
+                filename = escape_string(str(pID) + file.filename)
                 cursor.execute("INSERT INTO images (pID, pName, users_userID) VALUES (%s, %s, %s)",
                                (int(pID), filename, int(uID)))
                 cnx.commit()
 
                 destination = "/".join([target, filename])
-                print(destination)
                 file.save(destination)
+
+                for i in range(3):
+                    cursor.execute("SELECT max(tpID) FROM trimages")
+                    x = cursor.fetchone()
+                    if x[0] == None:
+                        tpID = 1;
+                    else:
+                        tpID = x[0] + 1
+
+                    tfilename = escape_string("tr" + str(i) + "_" + filename)
+                    img = Image(filename=destination)
+                    with img.clone() as tfile:
+                        image_transfer(tfile, i)
+                        cursor.execute("INSERT INTO trimages (tpID, tpName, images_pID) VALUES (%s, %s, %s)",
+                                   (int(tpID), tfilename, int(pID)))
+                        cnx.commit()
+                        tdestination = "/".join([target, tfilename])
+                        tfile.save(filename=tdestination)
 
             cursor.close()
             cnx.close()
@@ -55,5 +86,3 @@ def image_upload():
 
     except Exception as e:
         return str(e)
-
-

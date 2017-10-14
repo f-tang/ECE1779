@@ -3,7 +3,7 @@
 <!-- Custom styles for this template -->
 {% block cus_style %}
 body {
-padding-top: 256px;
+padding-top: 56px;
 }
 @media (min-width: 992px) {
 body {
@@ -20,12 +20,16 @@ padding-top: 56px;
 
 {% block content %}
 <!-- Page Content -->
+<br>
 <div class="container">
     <h1 class="my-4 text-center text-lg-left">Thumbnail Gallery</h1>
+    <ul class="list-unstyled">
+        Click <a href="{{url_for('image_upload')}}">here</a> to upload more images
+    </ul>
     <div class="row text-center text-lg-left">
         {% for image in images %}
             <div class="col-lg-3 col-md-4 col-xs-6">
-                <a href="{{url_for('full_image', image=image)}}" class="d-block mb-4 h-10">
+                <a href="{{url_for('full_image', username=session.username, image=image)}}" class="d-block mb-4 h-10">
                     <img class="img-fluid img-thumbnail" src="{{url_for('static', filename=image)}}" alt="">
                 </a>
             </div>

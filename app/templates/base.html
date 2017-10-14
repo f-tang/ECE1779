@@ -32,9 +32,11 @@
                 <li class="nav-item">
                     <a class="{% block nav_home %}{% endblock %}" href="{{url_for('main')}}">Home</a>
                 </li>
+                {% if session.logged_in %}
                 <li class="nav-item">
                     <a class="{% block nav_gallery %}{% endblock %}" href="{{url_for('gallery')}}">Gallery</a>
                 </li>
+                {% endif %}
             </ul>
             <ul class="navbar-nav justify-content-between">
                 {% if session.logged_in %}
