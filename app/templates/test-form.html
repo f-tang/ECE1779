@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>UplaodForm</title>
+</head>
+<body>
+<h1>UploadForm</h1>
+<form action="/test/FileUpload" enctype="multipart/form-data" method="post">
+    User ID
+    <input type="text" required name="userID">
+    <br>
+    Password
+    <input type="text" required name="password">
+    <br>
+    What is the image files to upload?
+    <input type="file" required name="uploadedfile" accept="image/*">
+    <br>
+    <input type="submit" value="Send">
+    <input type="reset">
+</form>
+    {% if error %}
+    <p class="error"><strong>Error: </strong>{{error}}</p>
+    {% endif %}
+</body>
+</html>

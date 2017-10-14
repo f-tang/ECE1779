@@ -36,3 +36,4 @@ from app import main
 from app import gallery
 from app import login_signup
 from app import image_upload
+from app import test

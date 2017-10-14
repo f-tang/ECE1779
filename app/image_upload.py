@@ -5,7 +5,6 @@ from wand.image import Image
 
 import gc
 import os
-import time
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -15,7 +14,8 @@ def image_transfer(imagefile, method):
         if int(method) == 0:
             imagefile.flip()
         if int(method) == 1:
-            imagefile.flop()
+            imagefile.evaluate(operator='rightshift', value=1, channel='blue')
+            imagefile.evaluate(operator='leftshift', value=1, channel='red')
         if int(method) == 2:
             imagefile.type = 'grayscale'
         return imagefile
@@ -41,6 +41,10 @@ def image_upload():
                 os.mkdir(target)
 
             for file in request.files.getlist("file"):
+                if file == None or file.filename == '':
+                    error = "file does not exist"
+                    return render_template("image-upload.html", title="upload images", error=error)
+
                 cursor.execute("SELECT max(pID) FROM images")
                 x = cursor.fetchone()
                 if x[0] == None:
@@ -49,12 +53,11 @@ def image_upload():
                     pID = x[0] + 1
 
                 filename = escape_string(str(pID) + file.filename)
-                cursor.execute("INSERT INTO images (pID, pName, users_userID) VALUES (%s, %s, %s)",
-                               (int(pID), filename, int(uID)))
-                cnx.commit()
-
                 destination = "/".join([target, filename])
                 file.save(destination)
+
+                cursor.execute("INSERT INTO images (pID, pName, users_userID) VALUES (%s, %s, %s)",
+                               (int(pID), filename, int(uID)))
 
                 for i in range(3):
                     cursor.execute("SELECT max(tpID) FROM trimages")
@@ -68,12 +71,12 @@ def image_upload():
                     img = Image(filename=destination)
                     with img.clone() as tfile:
                         image_transfer(tfile, i)
-                        cursor.execute("INSERT INTO trimages (tpID, tpName, images_pID) VALUES (%s, %s, %s)",
-                                   (int(tpID), tfilename, int(pID)))
-                        cnx.commit()
                         tdestination = "/".join([target, tfilename])
                         tfile.save(filename=tdestination)
+                        cursor.execute("INSERT INTO trimages (tpID, tpName, images_pID) VALUES (%s, %s, %s)",
+                                   (int(tpID), tfilename, int(pID)))
 
+            cnx.commit()
             cursor.close()
             cnx.close()
 

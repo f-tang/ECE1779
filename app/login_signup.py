@@ -72,8 +72,8 @@ class SignUpForm(FlaskForm):
                                           validators.EqualTo('confirm', message="Password must match")])
     confirm = PasswordField('Repeat Password')
 
-    accept_tos = BooleanField('I accept the <a href="/tos"> Terms of Service</a> '
-                              'and the <a href="/privacy"> Privacy Notice</a>', [validators.DataRequired()])
+#    accept_tos = BooleanField('I accept the <a href="/tos"> Terms of Service</a> '
+#                              'and the <a href="/privacy"> Privacy Notice</a>', [validators.DataRequired()])
 
 
 # signup page

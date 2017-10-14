@@ -21,7 +21,7 @@ padding-top: 108px;
 
     <form id="image-upload-form" action="{{ url_for('image_upload') }}" method="post" enctype="multipart/form-data">
         <dl>
-            <input type="file" name="file" accept="image/*" multiple>
+            <input type="file" name="file" required accept="image/*" multiple>
         </dl>
         <br>
         <p>
