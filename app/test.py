@@ -99,7 +99,7 @@ def test_fileupload():
             gc.collect()
 
             flash("upload successful")
-            return redirect(url_for("main"))
+            return redirect(url_for("test_fileupload"))
 
         return render_template("test-form.html")
 
