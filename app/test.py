@@ -48,6 +48,10 @@ def test_fileupload():
                 error = "Invalid credentials, try again."
                 return render_template("test-form.html", error=error)
 
+            if 'uploadedfile' not in request.files:
+                error = "file does not exist"
+                return render_template("test-form.html", error=error)
+            
             file = request.files['uploadedfile']
             if file == None or file.filename == '':
                 error = "file does not exist"
