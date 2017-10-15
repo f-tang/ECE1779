@@ -64,6 +64,10 @@ def test_fileupload():
             cursor.execute("SELECT userID FROM users WHERE username = (%s)",
                            (escape_string(username)))
             uID = cursor.fetchone()[0]
+
+            if not os.path.isdir(os.path.join(APP_ROOT, 'static/images/')):
+                os.mkdir(os.path.join(APP_ROOT, 'static/images/'))
+
             APP_RELATED = 'static/images/' + escape_string(username)
             target = os.path.join(APP_ROOT, APP_RELATED)
             if not os.path.isdir(target):

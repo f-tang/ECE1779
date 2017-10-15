@@ -43,6 +43,9 @@ def image_upload():
             uID = cursor.fetchone()[0]
 
             # file path of images
+            if not os.path.isdir(os.path.join(APP_ROOT, 'static/images/')):
+                os.mkdir(os.path.join(APP_ROOT, 'static/images/'))
+
             APP_RELATED = 'static/images/' + session['username']
             target = os.path.join(APP_ROOT, APP_RELATED)
 
