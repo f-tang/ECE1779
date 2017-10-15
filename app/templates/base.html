@@ -7,9 +7,9 @@
     <meta name="author" content="">
 
     {% if title %}
-        <title>{{ title }}</title>
+    <title>{{ title }}</title>
     {% else %}
-        <title>Index</title>
+    <title>Index</title>
     {% endif %}
 
     <!-- Bootstrap core CSS -->
@@ -18,6 +18,11 @@
     <style>
         {% block cus_style %}{% endblock %}
 
+
+
+
+
+
     </style>
 </head>
 
@@ -25,52 +30,53 @@
 <!-- Navigation -->
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="{% block nav_home %}{% endblock %}" href="{{url_for('main')}}">Home</a>
-                </li>
-                {% if session.logged_in %}
-                <li class="nav-item">
-                    <a class="{% block nav_gallery %}{% endblock %}" href="{{url_for('gallery')}}">Gallery</a>
-                </li>
-                {% endif %}
-            </ul>
-            <ul class="navbar-nav justify-content-between">
-                {% if session.logged_in %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('logout')}}">
-                            <font size="1">Logout</font>
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('login_form')}}">
-                            <font size="2">Login</font>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('signup_form')}}">
-                            <font size="2">Signup</font>
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="{% block nav_home %}{% endblock %}" href="{{url_for('main')}}">Home</a>
+            </li>
+            {% if session.logged_in %}
+            <li class="nav-item">
+                <a class="{% block nav_gallery %}{% endblock %}" href="{{url_for('gallery')}}">Gallery</a>
+            </li>
+            {% endif %}
+        </ul>
     </div>
+    <ul class="navbar-nav my-2 my-lg-0">
+        {% if session.logged_in %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{url_for('logout')}}">
+                <font size="1">Logout</font>
+            </a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{{url_for('login_form')}}">
+                <font size="2">Login</font>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{url_for('signup_form')}}">
+                <font size="2">Signup</font>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 </nav>
 {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-warning alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="close">
-                <span aria-hidden="true">&times;</span></button>
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+        <span aria-hidden="true">&times;</span></button>
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
 {% endwith %}
 
 {% block content %}{% endblock %}

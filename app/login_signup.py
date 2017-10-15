@@ -4,25 +4,17 @@ from wtforms import BooleanField, StringField, PasswordField, validators
 
 from passlib.hash import sha256_crypt
 
-from app import webapp, login_required, get_db
+from app import webapp, login_required, get_db, teardown_db
 
 from pymysql import escape_string
 
 import gc
 
 
-@webapp.teardown_appcontext
-def teardown_db(exception):
-    db = getattr(g, '_database', None)
-    if db is not None:
-        db.close()
-
-
 # define login form
 class LoginForm(FlaskForm):
     username = StringField('Username', [validators.Length(min=4, max=20)])
     password = PasswordField('Password', [validators.DataRequired()])
-
 
 # login page
 @webapp.route("/Login", methods=['GET', 'POST'])
@@ -33,24 +25,22 @@ def login_form():
         cnx = get_db()
         cursor = cnx.cursor()
         if request.method == "POST":
-
+            # check if form is validated
             if not form.validate_on_submit():
                 error = "request is invalidated"
                 return render_template("login-form.html", title='Login', form=form, error=error)
 
+            # verify user and password
             cursor.execute("SELECT password FROM users WHERE username = (%s)",
                             escape_string(form.username.data))
             x = cursor.fetchone()
-
-            if x == None:
+            if x is None:
                 error = "Username does not exist"
                 return render_template("login-form.html", title='Login', form=form, error=error)
-
             data = x[0]
             if sha256_crypt.verify(form.password.data, data):
                 session['logged_in'] = True
                 session['username'] = form.username.data
-
                 flash("You are now logged in")
                 return redirect(url_for("main"))
             else:
@@ -61,6 +51,7 @@ def login_form():
         return render_template("login-form.html", title='Login', form=form, error=error)
 
     except Exception as e:
+        teardown_db(e)
         return str(e)
 
 
@@ -71,7 +62,6 @@ class SignUpForm(FlaskForm):
     password = PasswordField('Password', [validators.DataRequired(),
                                           validators.EqualTo('confirm', message="Password must match")])
     confirm = PasswordField('Repeat Password')
-
 #    accept_tos = BooleanField('I accept the <a href="/tos"> Terms of Service</a> '
 #                              'and the <a href="/privacy"> Privacy Notice</a>', [validators.DataRequired()])
 
@@ -84,7 +74,7 @@ def signup_form():
         form = SignUpForm(request.form)
 
         if request.method == "POST":
-
+            # check if form is validated
             if not form.validate_on_submit():
                 error = "request is invalidated"
                 return render_template("signup-form.html", title='sign up', form=form, error=error)
@@ -95,20 +85,24 @@ def signup_form():
 
             cnx = get_db()
             cursor = cnx.cursor()
+
+            # check if username is taken
             cursor.execute("SELECT * FROM users WHERE username = (%s)",
                            (escape_string(username)))
             x = cursor.fetchone()
-
-            if not x == None:
+            if not x is None:
                 error = "That username is already taken"
                 return render_template('signup-form.html', title='sign up', form=form, error=error)
             else:
+                # give a userID to the user
                 cursor.execute("SELECT max(userID) AS max_value FROM users")
                 x = cursor.fetchone()
                 if x[0] == None:
                     uid = 1
                 else:
                     uid = x[0] + 1
+
+                # update database
                 cursor.execute("INSERT INTO users (userID, username, password, email) VALUES (%s, %s, %s, %s)",
                                (int(uid), escape_string(username), escape_string(password), escape_string(email)))
                 cnx.commit()
@@ -119,6 +113,7 @@ def signup_form():
 
                 gc.collect()
 
+                # record in session as a cookie
                 session['logged_in'] = True
                 session['username'] = username
 
@@ -127,6 +122,7 @@ def signup_form():
         return render_template("signup-form.html", title='sign up', form=form, error=error)
 
     except Exception as e:
+        teardown_db(e)
         return str(e)
 
 

@@ -20,7 +20,15 @@ def get_db():
         db = g._databse = connect_to_database()
     return db
 
+# exception teardown
+@webapp.teardown_appcontext
+def teardown_db(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
 
+
+# login-required wrapper
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):

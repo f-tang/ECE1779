@@ -20,30 +20,23 @@
 <br>
 <div class="container">
     <div class="row">
-        {% if not session.logged_in %}
         <div class="col-lg-12 text-center">
+            {% if not session.logged_in %}
             <h1 class="mt-5">Welcome, visitor</h1>
             <p class="lead">
                 Please <a href="{{url_for('login_form')}}">Login</a> for more content,
                 or <a href="{{url_for('signup_form')}}">sign up</a> for a new account.
             </p>
-            <ul class="list-unstyled">
-                <li>Bootstrap 4.0.0-beta</li>
-                <li>jQuery 3.2.1</li>
-            </ul>
-        </div>
-        {% else %}
-        <div class="col-lg-12 text-center">
+            {% else %}
             <h1 class="mt-5">Welcome back, {{session.username}}</h1>
             <p class="lead">
                 Have new images to share? Go to your <a href="{{url_for('gallery')}}">gallery</a> !
             </p>
+            {% endif %}
             <ul class="list-unstyled">
-                <li>Bootstrap 4.0.0-beta</li>
-                <li>jQuery 3.2.1</li>
+                <li>ECE1779-A1</li>
             </ul>
         </div>
-        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, request, g, flash, session
-from app import webapp, get_db
+from app import webapp, get_db, teardown_db
 from pymysql import escape_string
 from passlib.hash import sha256_crypt
 from wand.image import Image
@@ -23,7 +23,7 @@ def image_transfer(imagefile, method):
     except Exception as e:
         return str(e)
 
-
+# page for marking test
 @webapp.route("/test/FileUpload", methods=['GET', 'POST'])
 def test_fileupload():
     error = ""
@@ -35,11 +35,11 @@ def test_fileupload():
             cnx = get_db()
             cursor = cnx.cursor()
 
+            # verify the username and password
             cursor.execute("SELECT password FROM users WHERE username = (%s)",
                            (escape_string(username)))
             x = cursor.fetchone()
-
-            if x == None:
+            if x is None:
                 error = "Invalid credentials, try again."
                 return render_template("test-form.html", error=error)
 
@@ -48,15 +48,19 @@ def test_fileupload():
                 error = "Invalid credentials, try again."
                 return render_template("test-form.html", error=error)
 
+            # check if 'uploadedfile' is in the request
             if 'uploadedfile' not in request.files:
                 error = "file does not exist"
                 return render_template("test-form.html", error=error)
 
             file = request.files['uploadedfile']
-            if file == None or file.filename == '':
+
+            # double check if the file exists
+            if file is None or file.filename == '':
                 error = "file does not exist"
                 return render_template("test-form.html", error=error)
 
+            # determine the file path for upload
             cursor.execute("SELECT userID FROM users WHERE username = (%s)",
                            (escape_string(username)))
             uID = cursor.fetchone()[0]
@@ -65,6 +69,7 @@ def test_fileupload():
             if not os.path.isdir(target):
                 os.mkdir(target)
 
+            # give a pID for the new image
             cursor.execute("SELECT max(pID) FROM images")
             x = cursor.fetchone()
             if x[0] == None:
@@ -72,13 +77,17 @@ def test_fileupload():
             else:
                 pID = x[0] + 1
 
-            filename = escape_string(str(pID) + file.filename)
+            # save file
+            filename = str(file.filename).split('.')[-1]
+            filename = escape_string(str(pID) + '.' + filename)
             destination = "/".join([target, filename])
             file.save(destination)
 
+            # insert image info into database
             cursor.execute("INSERT INTO images (pID, pName, users_userID) VALUES (%s, %s, %s)",
                            (int(pID), filename, int(uID)))
 
+            # apply image transformations
             for i in range(3):
                 cursor.execute("SELECT max(tpID) FROM trimages")
                 x = cursor.fetchone()
@@ -108,4 +117,5 @@ def test_fileupload():
         return render_template("test-form.html")
 
     except Exception as e:
+        teardown_db(e)
         return str(e)
